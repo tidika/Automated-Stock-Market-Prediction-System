@@ -6,7 +6,6 @@ def lambda_handler(event, context):
     """Lambda function to create a new SageMaker endpoint and delete other endpoints starting with 'stock-prediction-endpoint'."""
     sm_client = boto3.client("sagemaker")
 
-    # The name of the model created in the Pipeline CreateModelStep
     model_name = event["model_name"]
     endpoint_config_name = event["endpoint_config_name"]
     endpoint_name = event["endpoint_name"]
@@ -33,27 +32,9 @@ def lambda_handler(event, context):
     )
     print(f"New endpoint {endpoint_name} created.")
 
-    # # List all existing endpoints
-    # list_endpoints_response = sm_client.list_endpoints()
-    # existing_endpoints = list_endpoints_response["Endpoints"]
-
-    # for endpoint in existing_endpoints:
-    #     existing_endpoint_name = endpoint["EndpointName"]
-    #     endpoint_status = endpoint["EndpointStatus"]
-
-    #     # Delete endpoints that start with 'stock-prediction-endpoint', excluding the newly created one
-    #     if (
-    #         existing_endpoint_name != endpoint_name
-    #         and existing_endpoint_name.startswith("stock-prediction-endpoint")
-    #         and endpoint_status == "InService"
-    #     ):
-    #         print(f"Deleting endpoint: {existing_endpoint_name}")
-    #         sm_client.delete_endpoint(EndpointName=existing_endpoint_name)
-
     return {
         "statusCode": 200,
         "body": json.dumps(
             f"Created new endpoint {endpoint_name} and deleted other endpoints starting with 'stock-prediction-endpoint'."
         ),
     }
-

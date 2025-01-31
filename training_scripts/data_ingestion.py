@@ -7,7 +7,7 @@ import sys
 
 def install_dependencies():
     """
-    Install required Python dependencies. 
+    Install required Python dependencies.
     Alternatively, consider using a pre-built container with these dependencies pre-installed.
     """
     try:
@@ -20,7 +20,7 @@ def install_dependencies():
 
 def fetch_data(years_to_filter: int, output_dir: str) -> None:
     """
-    Fetch historical S&P 500 market data, filter it based on the specified number of years, 
+    Fetch historical S&P 500 market data, filter it based on the specified number of years,
     and save the data as a CSV file to the specified output directory.
 
     Args:
@@ -45,7 +45,7 @@ def fetch_data(years_to_filter: int, output_dir: str) -> None:
         print(f"Filtering data from {start_date.date()} to {end_date.date()}...")
 
         # Filter data
-        filtered_data = sp500.loc[start_date.strftime("%Y-%m-%d"):]
+        filtered_data = sp500.loc[start_date.strftime("%Y-%m-%d") :]
 
         # Ensure output directory exists
         os.makedirs(output_dir, exist_ok=True)
@@ -69,8 +69,15 @@ def main():
     install_dependencies()
 
     # Parse command-line arguments
-    parser = argparse.ArgumentParser(description="Fetch and save historical S&P 500 market data.")
-    parser.add_argument("--years-to-filter", type=int, required=True, help="Number of historical years to filter.")
+    parser = argparse.ArgumentParser(
+        description="Fetch and save historical S&P 500 market data."
+    )
+    parser.add_argument(
+        "--years-to-filter",
+        type=int,
+        required=True,
+        help="Number of historical years to filter.",
+    )
     args = parser.parse_args()
 
     # Define output directory
@@ -78,7 +85,6 @@ def main():
 
     # Fetch and save S&P 500 data
     fetch_data(args.years_to_filter, output_dir)
-
 
 
 if __name__ == "__main__":

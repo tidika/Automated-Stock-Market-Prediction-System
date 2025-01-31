@@ -102,16 +102,32 @@ def process_data(input_path, output_dir, horizons):
     save_data(data, output_dir)
 
 
-if __name__ == "__main__":
+def main():
+    """
+    Main entry point for the script. Handles argument parsing and orchestrates data processing and generation of new features.
+    """
 
-    #Parse data input path and output directory as command-line arguments
-    parser = argparse.ArgumentParser(description="Train and backtest a RandomForest model.")
-    parser.add_argument("--input_path", type=str, required=True, help="Path to the input CSV file.")
-    parser.add_argument("--output_dir", type=str, required=True, help="Directory to save processed data.")
+    # Parse data input path and output directory as command-line arguments
+    parser = argparse.ArgumentParser(
+        description="Train and backtest a RandomForest model."
+    )
+    parser.add_argument(
+        "--input_path", type=str, required=True, help="Path to the input CSV file."
+    )
+    parser.add_argument(
+        "--output_dir",
+        type=str,
+        required=True,
+        help="Directory to save processed data.",
+    )
     args = parser.parse_args()
 
-    #List of horizons for feature generation
+    # List of horizons for feature generation
     horizons = [2, 5, 60, 250, 1000]
 
-    #Process the data
+    # Process the data
     process_data(args.input_path, args.output_dir, horizons)
+
+
+if __name__ == "__main__":
+    main()

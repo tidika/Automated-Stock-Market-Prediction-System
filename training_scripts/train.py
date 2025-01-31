@@ -5,12 +5,13 @@ import joblib
 import pandas as pd
 import xgboost as xgb
 
+
 def setup_logging():
     """Sets up logging configuration."""
     logging.basicConfig(
-        format="%(asctime)s - %(levelname)s - %(message)s",
-        level=logging.INFO
+        format="%(asctime)s - %(levelname)s - %(message)s", level=logging.INFO
     )
+
 
 def load_data(input_path):
     """Loads the raw data from the input path.
@@ -42,41 +43,49 @@ def train_model(data, features, model_dir):
     """
     # Create the model directory if it doesn't exist
     os.makedirs(model_dir, exist_ok=True)
-    
-    x_train = data[features].iloc[:-100]
-    # y_train = data["Target"].iloc[:-100]
 
-    # Set hyperparameters for the XGBoost model
+    x_train = data[features].iloc[:-100]  # all data except the last 100
+
     params = {
         "objective": "binary:logistic",
         "eval_metric": "logloss",
         "max_depth": 5,
-        "eta": 0.1
+        "eta": 0.1,
     }
 
     # Convert training data to DMatrix
     dtrain = xgb.DMatrix(data=x_train, label=y_train)
     num_round = 100  # Number of boosting rounds
     model = xgb.train(params, dtrain, num_boost_round=num_round)
-    
+
     # Save the model
     logging.info(f"Saving trained model to {model_dir}")
     model.save_model(os.path.join(model_dir, "model.xgb"))
     logging.info("Model training, prediction, and saving completed successfully.")
 
 
-if __name__ == "__main__":
+def main():
+    """Main function to load data, train the model, and save the results."""
     setup_logging()
 
     # Parse command-line arguments
-    parser = argparse.ArgumentParser(description="Train Stock Market data using a Xgboost model.")
-    parser.add_argument("--model-dir", type=str, default=os.environ.get("SM_MODEL_DIR"), help="Directory to save model artifacts.")
+    parser = argparse.ArgumentParser(
+        description="Train Stock Market data using a Xgboost model."
+    )
+    parser.add_argument(
+        "--model-dir",
+        type=str,
+        default=os.environ.get("SM_MODEL_DIR"),
+        help="Directory to save model artifacts.",
+    )
     args = parser.parse_args()
 
-    input_path = "/opt/ml/input/data/train/train.csv" #Path to the input CSV file.
-    try:
-        sp500data = load_data(input_path)
-        features = sp500data.columns[-10:].to_list()
-        train_model(sp500data, features, args.model_dir)
-    except Exception as e:
-        logging.error(f"An error occurred during execution: {e}")
+    input_path = "/opt/ml/input/data/train/train.csv"  # Path to the input CSV file.
+
+    sp500data = load_data(input_path)
+    features = sp500data.columns[-10:].to_list()
+    train_model(sp500data, features, args.model_dir)
+
+
+if __name__ == "__main__":
+    main()

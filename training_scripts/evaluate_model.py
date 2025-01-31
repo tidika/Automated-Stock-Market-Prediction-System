@@ -1,7 +1,7 @@
-import argparse
 import os
-import pandas as pd
 import json
+import argparse
+import pandas as pd
 from sklearn.metrics import precision_score
 import logging
 import tarfile
@@ -13,12 +13,18 @@ def parse_args():
     parser = argparse.ArgumentParser()
 
     # Input and output paths
-    parser.add_argument("--input-path", type=str, required=True, help="Path to test dataset")
-    parser.add_argument("--model-path", type=str, required=True, help="Path to trained model")
-    parser.add_argument("--output-path", type=str, required=True, help="Path to save evaluation results")
-    
+    parser.add_argument(
+        "--input-path", type=str, required=True, help="Path to test dataset"
+    )
+    parser.add_argument(
+        "--model-path", type=str, required=True, help="Path to trained model"
+    )
+    parser.add_argument(
+        "--output-path", type=str, required=True, help="Path to save evaluation results"
+    )
 
     return parser.parse_args()
+
 
 def load_data(input_path):
     """Loads the raw data from the input path.
@@ -39,57 +45,63 @@ def load_data(input_path):
         logging.error(f"Failed to load data: {e}")
         raise
 
+
 def extract_model(archive_path, extract_to):
     """Extract the model.tar.gz archive."""
     with tarfile.open(archive_path, "r:gz") as tar:
         tar.extractall(path=extract_to)
     print(f"Extracted to: {extract_to}")
 
+
 def load_xgboost_model(model_dir):
     """Load an XGBoost model from a tar.gz file."""
+
     archive_path = os.path.join(model_dir, "model.tar.gz")
     extract_to = os.path.join(model_dir, "extracted")
-    
+
     # Step 1: Extract the tar.gz file
     extract_model(archive_path, extract_to)
-    
+
     # Step 2: Locate the model file
-    model_path = os.path.join(extract_to, "model.xgb")  
+    model_path = os.path.join(extract_to, "model.xgb")
     if not os.path.exists(model_path):
         raise FileNotFoundError(f"Model file not found: {model_path}")
-    
+
     # Step 3: Load the model
     model = xgb.Booster()
     model.load_model(model_path)
     print("Model loaded successfully.")
     return model
-    
+
+
 def evaluate_model(data, features, model):
     """Evaluate the model on the test dataset."""
-    
+
     x_test = data[features].iloc[-100:]
     y_test = data["Target"].iloc[-100:]
     preds = model.predict(xgb.DMatrix(x_test))
-    preds[preds >=0.5] = 1
-    preds[preds <0.5] = 0
+    preds[preds >= 0.5] = 1
+    preds[preds < 0.5] = 0
     preds = pd.Series(preds, index=y_test.index, name="Predictions")
     combined = pd.concat([y_test, preds], axis=1)
     print("printing combined dataframe")
     print(combined)
-    
+
     # Rename columns for clarity
     combined.columns = ["Target", "Predictions"]
-    
-    #Compute evaluation metrics
+
+    # Compute evaluation metrics
     score = precision_score(combined["Target"], combined["Predictions"])
-    
-    #Return metrics as a dictionary
+
+    # Return metrics as a dictionary
     return {
-        "precision":score,
+        "precision": score,
     }
- 
+
+
 def save_results(metrics, output_dir):
     """Save the evaluation metrics to a JSON file."""
+
     os.makedirs(output_dir, exist_ok=True)
     results_path = os.path.join(output_dir, "evaluation.json")
 
@@ -100,6 +112,7 @@ def save_results(metrics, output_dir):
 
 
 def main():
+    """Main function to load data, evaluate the model, and save the results."""
     # Parse arguments
     args = parse_args()
 
@@ -118,6 +131,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-
