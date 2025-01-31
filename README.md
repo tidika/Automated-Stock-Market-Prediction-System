@@ -2,44 +2,45 @@
 
 This project demonstrates how to build an automated stock market (SP 500) prediction system using AWS SageMaker. The components of this system are:
 
-1. [**SageMaker Training Pipeline**](sagemaker-training-pipeline.ipynb) 
+1. [**SageMaker Training Pipeline**](sagemaker-training-pipeline.ipynb)
 2. [**SageMaker Inference Pipeline**](sagemaker-inference-pipeline.ipynb)
-3. **SageMaker Model Monitoring** (to be implemented): 
+3. [**SageMaker Model Monitoring**](#sagemaker-model-monitoring-upcoming) (to be implemented)
 
-## Training Pipeline
+## SageMaker Training Pipeline
+
 ![Sagemaker training pipeline](/images/Training_pipeline.jpeg)
-<!-- Add a blank line here -->
 
-This pipeline as shown in the above diagram is used to build and deploy the machine learning model. The training pipeline consists of the following steps:
+This pipeline, as shown in the above diagram, is used to build and deploy the machine learning model. The training pipeline consists of the following steps:
 
-- **Data Ingestion**: This step fetches the stock market data (sp500) from yahoo finance api and store it in s3 bucket for future reference.
-- **Data Processing**: This step retrieves the ingested data from the data ingestion phase and processes it into a feature ready for machine learning training. 
-- **Model Training**: it retrieves the features from the data processing stage and trains a machine learning model using xgboost algorithm and stores the artifacts in an s3 bucket.
-- **Model Evaluation**: It evaluates the trained model using precision_score metric. 
-- **Model Registry**: It registers the model to sagemaker model registry when the percision_score is above 0.5
-- **Model Deployment**: It uses LambdaStep to deploy the trained model to a sagmaker realtime endpoint
+- **Data Ingestion**: Fetches the stock market data (SP 500) from Yahoo Finance API and stores it in an S3 bucket for future reference.
+- **Data Processing**: Retrieves the ingested data from the data ingestion phase and processes it into features ready for machine learning training.
+- **Model Training**: Retrieves the features from the data processing stage, trains a machine learning model using the XGBoost algorithm, and stores the artifacts in an S3 bucket.
+- **Model Evaluation**: Evaluates the trained model using the precision_score metric.
+- **Model Registry**: Registers the model to the SageMaker model registry when the precision_score is above 0.5.
+- **Model Deployment**: Uses LambdaStep to deploy the trained model to a SageMaker real-time endpoint.
 
+## SageMaker Inference Pipeline
 
-## Inference Pipeline:
-![Sagemaker training pipeline](/images/Inference_pipeline.jpeg)
-<!-- Add a blank line here -->
-This pipeline is used for making predictions.The inference pipeline consists of the following steps:
-- **Data Ingestion**: Similar to data ingestion in the training pipeline, it fetches inference data from the yahoo finance api.
-- **Data Preprocessing**: It retrieves the inference data from the ingestion step and processes it and store it in an s3 bucket.
-- **Model Inference**: This step uses lambda function to retrieve the inference data from s3 bucket and pass it through the deployed model endpoint and get predicted data which is stored in dynamodb.
+![Sagemaker inference pipeline](/images/Inference_pipeline.jpeg)
 
-## Model Monitoring (Upcoming)
+The inference pipeline consists of the following steps:
+- **Data Ingestion**: Uses an `SKLearnProcessor` to ingest data.
+- **Data Preprocessing**: Uses an `SKLearnProcessor` to preprocess the data.
+- **Model Inference**: Uses a `ModelStep` to make predictions.
 
-This will be used to monitor data quality and model performance. It will trigger retraining when there is a significant shift in the data and send notifications to the product owner.
+## SageMaker Model Monitoring (Upcoming)
+
 The model monitoring will include:
 - **Data Capture**: Enabling data capture for the endpoint to monitor input and output data.
 - **Baseline Data and Constraints**: Setting up baseline data and constraints for monitoring.
 - **Monitoring Schedule**: Creating a monitoring schedule to regularly check for data drift and model quality.
 - **CloudWatch Alarms**: Setting up CloudWatch alarms to notify when data drift or model quality issues are detected.
 
+
 ## Pipeline Scheduling
-- Training pipeline schedule: This schedules the sagemaker training pipeline using eventbridge. It is scheduled to run once every week.
-- Inference pipeline schedule: This runs every weekday (Mon - Fri) and predicts whether the sp500 will increase or decrease the next day. 
+
+- **Training Pipeline Schedule**: This schedules the SageMaker training pipeline using EventBridge. It is scheduled to run once every week.
+- **Inference Pipeline Schedule**: This runs every weekday (Mon - Fri) and predicts whether the SP 500 will increase or decrease the next day.
 
 ## Conclusion
 
