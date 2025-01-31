@@ -23,10 +23,10 @@ This pipeline, as shown in the above diagram, is used to build and deploy the ma
 
 ![Sagemaker inference pipeline](/images/Inference_pipeline.jpeg)
 
-The inference pipeline consists of the following steps:
-- **Data Ingestion**: Uses an `SKLearnProcessor` to ingest data.
-- **Data Preprocessing**: Uses an `SKLearnProcessor` to preprocess the data.
-- **Model Inference**: Uses a `ModelStep` to make predictions.
+This pipeline is used for making predictions. The inference pipeline consists of the following steps:
+- **Data Ingestion**: Similar to the data ingestion in the training pipeline, it fetches inference data from the Yahoo Finance API.
+- **Data Preprocessing**: It retrieves the inference data from the ingestion step, processes it, and stores it in an S3 bucket.
+- **Model Inference**: This step uses a Lambda function to retrieve the processed inference data from the S3 bucket, pass it through the deployed model endpoint, and store the predicted data in DynamoDB.
 
 ## SageMaker Model Monitoring (Upcoming)
 
@@ -39,8 +39,8 @@ The model monitoring will include:
 
 ## Pipeline Scheduling
 
-- **Training Pipeline Schedule**: This schedules the SageMaker training pipeline using EventBridge. It is scheduled to run once every week.
-- **Inference Pipeline Schedule**: This runs every weekday (Mon - Fri) and predicts whether the SP 500 will increase or decrease the next day.
+- **Training Pipeline Schedule**: It schedules the training pipeline using eventbridge. The scheduled pipeline run once every week.
+- **Inference Pipeline Schedule**: It schedules inference pipeline using eventbridge. The pipeline runs every weekday (Mon - Fri) and predicts whether the SP 500 will increase or decrease the next day.
 
 ## Conclusion
 
