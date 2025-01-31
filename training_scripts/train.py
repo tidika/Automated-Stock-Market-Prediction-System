@@ -45,6 +45,7 @@ def train_model(data, features, model_dir):
     os.makedirs(model_dir, exist_ok=True)
 
     x_train = data[features].iloc[:-100]  # all data except the last 100
+    y_train = data["Target"].iloc[:-100]
 
     params = {
         "objective": "binary:logistic",
