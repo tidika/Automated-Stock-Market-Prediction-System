@@ -1,36 +1,35 @@
 # Automated-Stock-Market-Prediction-System
 
-This project demonstrates how to build an automated stock market (SP 500) prediction system using AWS SageMaker. The components of this system include:
+This project demonstrates how to build an automated stock market (SP 500) prediction system using AWS SageMaker. The components of this system are:
 
-1. [**SageMaker Training Pipeline**](sagemaker-training-pipeline.ipynb): This pipeline is used to build and deploy the machine learning model. It includes steps for data ingestion, data processing, model training, model evaluation and model deployment. 
+1. [**SageMaker Training Pipeline**](sagemaker-training-pipeline.ipynb) 
+2. [**SageMaker Inference Pipeline**](sagemaker-inference-pipeline.ipynb)
+3. **SageMaker Model Monitoring** (to be implemented): 
+
+## Training Pipeline
 ![Sagemaker training pipeline](/images/Training_pipeline.jpeg)
 <!-- Add a blank line here -->
 
-2. [**SageMaker Inference Pipeline**](sagemaker-inference-pipeline.ipynb): This pipeline is used for making predictions. It includes steps for data ingestion, data preprocessing, and model inference.
-![Sagemaker training pipeline](/images/Inference_pipeline.jpeg)
-<!-- Add a blank line here -->
+This pipeline as shown in the above diagram is used to build and deploy the machine learning model. The training pipeline consists of the following steps:
 
-3. **SageMaker Model Monitoring** (to be implemented): This will be used to monitor data quality and model performance. It will trigger retraining when there is a significant shift in the data and send notifications to the product owner.
-
-## Training Pipeline
-
-The training pipeline consists of the following steps:
-- **Data Ingestion**: Using an `SKLearnProcessor` to ingest data.
-- **Data Processing**: Using an `SKLearnProcessor` to preprocess the data.
+- **Data Ingestion**: This step fetches the stock market data (sp500) from yahoo finance api and store it in s3 bucket for future reference.
+- **Data Processing**: This step retrieves the ingested data from the data ingestion phase and processes it into a feature ready for machine learning training. 
 - **Model Training**: Using an `Estimator` to train the model.
 - **Model Evaluation**: Using a `ProcessingStep` to evaluate the model.
 - **Model Deployment**: Using a `LambdaStep` to deploy the model.
 
 
 ## Inference Pipeline:
-
-The inference pipeline consists of the following steps:
+![Sagemaker training pipeline](/images/Inference_pipeline.jpeg)
+<!-- Add a blank line here -->
+This pipeline is used for making predictions.The inference pipeline consists of the following steps:
 - **Data Ingestion**: Using an `SKLearnProcessor` to ingest data.
 - **Data Preprocessing**: Using an `SKLearnProcessor` to preprocess the data.
 - **Model Inference**: Using a `ModelStep` to make predictions.
 
 ## Model Monitoring (Upcoming)
 
+This will be used to monitor data quality and model performance. It will trigger retraining when there is a significant shift in the data and send notifications to the product owner.
 The model monitoring will include:
 - **Data Capture**: Enabling data capture for the endpoint to monitor input and output data.
 - **Baseline Data and Constraints**: Setting up baseline data and constraints for monitoring.
