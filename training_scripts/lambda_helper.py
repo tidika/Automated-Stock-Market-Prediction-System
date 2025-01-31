@@ -3,7 +3,19 @@ import boto3
 
 
 def lambda_handler(event, context):
-    """Lambda function to create a new SageMaker endpoint and delete other endpoints starting with 'stock-prediction-endpoint'."""
+    """Handles AWS Lambda events to create a SageMaker endpoint configuration and endpoint.
+
+    Args:
+        event (dict): Event data passed to the Lambda function. Expected keys:
+            - model_name (str): Name of the SageMaker model.
+            - endpoint_config_name (str): Name of the endpoint configuration.
+            - endpoint_name (str): Name of the endpoint to be created.
+        context (object): Lambda Context runtime methods and attributes.
+
+    Returns:
+        dict: Response from the SageMaker create endpoint operation.
+    """
+    
     sm_client = boto3.client("sagemaker")
 
     model_name = event["model_name"]
