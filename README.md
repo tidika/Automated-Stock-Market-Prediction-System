@@ -42,7 +42,15 @@ The model monitoring will include:
 - **Training Pipeline Schedule**: It schedules the training pipeline using eventbridge. The scheduled pipeline run once every week.
 - **Inference Pipeline Schedule**: It schedules inference pipeline using eventbridge. The pipeline runs every weekday (Mon - Fri) and predicts whether the SP 500 will increase or decrease the next day.
 
+
 ## Images
+### Training Pipeline DAG
+![Training Pipeline DAG](/images/training_pipeline_dag.jpeg)
+
+### Inference Pipeline DAG
+![Inference Pipeline DAG](/images/inference_pipeline_dag.jpeg)
+
+
 
 ## Conclusion
 
