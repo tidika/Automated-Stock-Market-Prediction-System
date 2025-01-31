@@ -47,7 +47,7 @@ The model monitoring will include:
 ![Training Pipeline DAG](/images/training_pipeline_dag.jpeg)
 
 ### Inference Pipeline DAG
-![Inference Pipeline DAG](/images/inference_pipeline_dag.png)
+![Inference Pipeline DAG](/images/inference_pipeline_dag.jpeg)
 
 
 
