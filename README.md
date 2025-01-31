@@ -17,7 +17,7 @@ This pipeline, as shown in the above diagram, is used to build and deploy the ma
 - **Model Training**: Retrieves the features from the data processing stage, trains a machine learning model using the XGBoost algorithm, and stores the artifacts in an S3 bucket.
 - **Model Evaluation**: Evaluates the trained model using the precision_score metric.
 - **Model Registry**: Registers the model to the SageMaker model registry when the precision_score is above 0.5.
-- **Model Deployment**: Uses LambdaStep to deploy the trained model to a SageMaker real-time endpoint.
+- **Model Deployment**: Uses LambdaStep to deploy the registered model to a SageMaker real-time endpoint.
 
 ## SageMaker Inference Pipeline
 
@@ -36,11 +36,10 @@ The model monitoring will include:
 - **Monitoring Schedule**: Creating a monitoring schedule to regularly check for data drift and model quality.
 - **CloudWatch Alarms**: Setting up CloudWatch alarms to notify when data drift or model quality issues are detected.
 
-
 ## Pipeline Scheduling
 
 - **Training Pipeline Schedule**: It schedules the training pipeline using eventbridge. The scheduled pipeline run once every week.
-- **Inference Pipeline Schedule**: It schedules inference pipeline using eventbridge. The pipeline runs every weekday (Mon - Fri) and predicts whether the SP 500 will increase or decrease the next day.
+- **Inference Pipeline Schedule**: It schedules inference pipeline using eventbridge. The pipeline runs every weekday (Mon - Fri) and predicts whether the SP500 will increase or decrease the next day.
 
 
 ## Images
@@ -48,7 +47,7 @@ The model monitoring will include:
 ![Training Pipeline DAG](/images/training_pipeline_dag.jpeg)
 
 ### Inference Pipeline DAG
-![Inference Pipeline DAG](/images/inference_pipeline_dag.jpeg)
+![Inference Pipeline DAG](/images/inference_pipeline_dag.png)
 
 
 
