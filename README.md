@@ -42,6 +42,8 @@ The model monitoring will include:
 - **Training Pipeline Schedule**: It schedules the training pipeline using eventbridge. The scheduled pipeline run once every week.
 - **Inference Pipeline Schedule**: It schedules inference pipeline using eventbridge. The pipeline runs every weekday (Mon - Fri) and predicts whether the SP 500 will increase or decrease the next day.
 
+## Images
+
 ## Conclusion
 
 This project provides a comprehensive solution for automated stock market prediction using AWS SageMaker. It includes training, inference, and monitoring pipelines to ensure the model remains accurate and reliable over time.
