@@ -1,9 +1,15 @@
 # Automated-Stock-Market-Prediction-System
 
-This project demonstrates how to build an automated stock market (SnP 500) prediction system using AWS SageMaker. The components of this system include:
+This project demonstrates how to build an automated stock market (SP 500) prediction system using AWS SageMaker. The components of this system include:
 
-1. [**SageMaker Training Pipeline**](#sagemaker-training-pipeline.ipynb): This pipeline is used to build and deploy the machine learning model. It includes steps for data ingestion, data processing, model training, and model evaluation.
-2. [**SageMaker Inference Pipeline**](#sagemaker-inference-pipeline.ipynb): This pipeline is used for making predictions. It includes steps for data ingestion, data preprocessing, and model inference.
+1. [**SageMaker Training Pipeline**](sagemaker-training-pipeline.ipynb): This pipeline is used to build and deploy the machine learning model. It includes steps for data ingestion, data processing, model training, model evaluation and model deployment. 
+![Sagemaker training pipeline](/images/training_pipeline.jpeg)
+<!-- Add a blank line here -->
+
+2. [**SageMaker Inference Pipeline**](sagemaker-inference-pipeline.ipynb): This pipeline is used for making predictions. It includes steps for data ingestion, data preprocessing, and model inference.
+![Sagemaker training pipeline](/images/training_pipeline.jpeg)
+<!-- Add a blank line here -->
+
 3. **SageMaker Model Monitoring** (to be implemented): This will be used to monitor data quality and model performance. It will trigger retraining when there is a significant shift in the data and send notifications to the product owner.
 
 ## Training Pipeline

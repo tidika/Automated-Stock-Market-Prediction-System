@@ -58,7 +58,7 @@ def lambda_handler(event, context):
         Item={
             "id": {"S": prediction_id},  # Unique ID for the entry
             "prediction_value": {"S": prediction}, # Store the prediction
-            "prediction_class": {"N": prediction_class}
+            "prediction_class": {"N": str(prediction_class)}
         }
     )
 
