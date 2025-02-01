@@ -14,7 +14,7 @@ This pipeline, as shown in the above diagram, is used to build and deploy the ma
 
 - **Data Ingestion**: Fetches the stock market data (SP 500) from Yahoo Finance API and stores it in an S3 bucket for future reference.
 - **Data Processing**: Retrieves the ingested data from the data ingestion phase and processes it into features ready for machine learning training.
-- **Model Training**: Retrieves the features from the data processing stage, trains a machine learning model using the XGBoost algorithm, and stores the artifacts in an S3 bucket.
+- **Model Training**: Retrieves the features from the data processing stage, trains a machine learning model using the XGBoost algorithm to predict whether sp500 close price will increase(1) or decrease(0) the next day, and stores the artifacts in an S3 bucket.
 - **Model Evaluation**: Evaluates the trained model using the precision_score metric.
 - **Model Registry**: Registers the model to the SageMaker model registry when the precision_score is above 0.5.
 - **Model Deployment**: Uses LambdaStep to deploy the registered model to a SageMaker real-time endpoint.
