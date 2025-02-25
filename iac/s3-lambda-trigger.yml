@@ -1,0 +1,84 @@
+# This CloudFormation template creates an S3 bucket event notification that triggers a Lambda function  
+# whenever a new object is created in a specific folder (prefix) within the bucket.  
+# - Bucket Name: aws-portfolio-projects  
+# - Folder Prefix: snp500-data/inference_data/processed/  
+# - Lambda function is granted permission to be invoked by S3 events.  
+
+# Resources:
+#   S3Bucket:
+#     Type: AWS::S3::Bucket
+#     Properties:
+#       BucketName: aws-portfolio-projects
+#       NotificationConfiguration:
+#         LambdaConfigurations:
+#           - Event: "s3:ObjectCreated:*"
+#             Function: arn:aws:lambda:us-east-2:930627915954:function:TriggerStepfunctionUsingLambda
+#             Filter:
+#               S3Key:
+#                 Rules:
+#                   - Name: "prefix"
+#                     Value: "snp500-data/inference_data/processed/"
+
+#   S3LambdaTrigger:
+#     Type: AWS::Lambda::Permission
+#     Properties:
+#       Action: "lambda:InvokeFunction"
+#       FunctionName: TriggerStepfunctionUsingLambda
+#       Principal: "s3.amazonaws.com"
+#       SourceArn: !GetAtt S3Bucket.Arn
+
+
+Resources:
+  S3EventConfigFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: ConfigureS3EventNotifications
+      Runtime: python3.8
+      Handler: index.lambda_handler
+      Role: arn:aws:iam::930627915954:role/LambdaExecutionRole  # Replace with your IAM role
+      Code:
+        ZipFile: |
+          import boto3
+          import json
+
+          s3 = boto3.client('s3')
+
+          def lambda_handler(event, context):
+              bucket_name = "aws-portfolio-projects"
+              lambda_arn = "arn:aws:lambda:us-east-2:930627915954:function:TriggerStepfunctionUsingLambda"
+
+              notification_configuration = {
+                  "LambdaFunctionConfigurations": [
+                      {
+                          "LambdaFunctionArn": lambda_arn,
+                          "Events": ["s3:ObjectCreated:*"],
+                          "Filter": {
+                              "Key": {
+                                  "FilterRules": [
+                                      {"Name": "prefix", "Value": "snp500-data/inference_data/processed/"}
+                                  ]
+                              }
+                          }
+                      }
+                  ]
+              }
+
+              s3.put_bucket_notification_configuration(
+                  Bucket=bucket_name,
+                  NotificationConfiguration=notification_configuration
+              )
+
+              return {"statusCode": 200, "body": "S3 Event Notification Configured"}
+
+  S3EventConfigInvoke:
+    Type: Custom::S3EventConfig
+    Properties:
+      ServiceToken: !GetAtt S3EventConfigFunction.Arn
+
+  S3LambdaTrigger:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: "lambda:InvokeFunction"
+      FunctionName: TriggerStepfunctionUsingLambda
+      Principal: "s3.amazonaws.com"
+      SourceArn: "arn:aws:s3:::aws-portfolio-projects"

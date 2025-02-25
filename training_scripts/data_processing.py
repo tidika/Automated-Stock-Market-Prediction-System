@@ -60,11 +60,13 @@ def add_features(data, horizons):
         data[trend_column] = data.shift(1).rolling(horizon).sum()["Target"]
 
         new_predictors.extend([ratio_column, trend_column])
+        features = data.columns[-10:].to_list()
+        feature_data = data[features]
 
-    return data
+    return data, feature_data
 
 
-def save_data(data, output_dir):
+def save_data(data,feature_data,output_dir):
     """Saves the processed data to the output directory.
 
     Args:
@@ -73,8 +75,10 @@ def save_data(data, output_dir):
     """
     os.makedirs(output_dir, exist_ok=True)
     output_file = os.path.join(output_dir, "train.csv")
+    output_feature = os.path.join(output_dir, "features.csv")
     logging.info(f"Saving processed data to {output_file}")
     data.to_csv(output_file, index=False)
+    feature_data.to_csv(output_feature, index=False) #this to be used for model monitoring
 
 
 def process_data(input_path, output_dir, horizons):
@@ -92,14 +96,14 @@ def process_data(input_path, output_dir, horizons):
     data = add_target_column(data)
 
     # Add new features
-    data = add_features(data, horizons)
+    data, feature_data = add_features(data, horizons)
 
     # Drop rows with missing values
     data = data.dropna()
     logging.info(f"Data after cleaning: {data.shape[0]} rows")
 
     # Save the processed data
-    save_data(data, output_dir)
+    save_data(data, feature_data, output_dir)
 
 
 def main():

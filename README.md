@@ -4,7 +4,7 @@ This project demonstrates how to build an automated stock market (SP 500) predic
 
 1. [**SageMaker Training Pipeline**](sagemaker-training-pipeline.ipynb)
 2. [**SageMaker Inference Pipeline**](sagemaker-inference-pipeline.ipynb)
-3. [**SageMaker Model Monitoring**](#sagemaker-model-monitoring-upcoming) (to be implemented)
+3. [**SageMaker Model Monitoring**](model_monitoring.ipynb)
 
 ## SageMaker Training Pipeline
 
@@ -28,13 +28,13 @@ This pipeline is used for making predictions. The inference pipeline consists of
 - **Data Preprocessing**: It retrieves the inference data from the ingestion step, processes it, and stores it in an S3 bucket.
 - **Model Inference**: This step uses a Lambda function to retrieve the processed inference data from the S3 bucket, pass it through the deployed model endpoint, and store the predicted data in DynamoDB.
 
-## SageMaker Model Monitoring (Upcoming)
-
-The model monitoring will include:
-- **Data Capture**: Enabling data capture for the endpoint to monitor input and output data.
-- **Baseline Data and Constraints**: Setting up baseline data and constraints for monitoring.
-- **Monitoring Schedule**: Creating a monitoring schedule to regularly check for data drift and model quality.
-- **CloudWatch Alarms**: Setting up CloudWatch alarms to notify when data drift or model quality issues are detected.
+## SageMaker Model Monitoring
+![Sagemaker model monitor pipeline](/images/monitoring_pipeline.jpeg)
+The model monitoring includes:
+- **Data Capture**: Enables data capture for the endpoint to monitor input and output data.
+- **Baseline Data and Constraints**: Sets up baseline data and constraints for monitoring.
+- **Monitoring Schedule**: Creats a monitoring schedule to regularly check for data drift and model quality.
+- **CloudWatch Alarms**: Sets up CloudWatch alarms to notify when data drift or model quality issues are detected.
 
 ## Pipeline Scheduling
 
