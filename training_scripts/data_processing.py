@@ -48,7 +48,7 @@ def add_features(data, horizons):
     """
     logging.info("Adding new features")
     new_predictors = []
-
+    data.set_index("Date", inplace=True)
     for horizon in horizons:
         logging.info(f"Processing horizon: {horizon}")
         rolling_averages = data.rolling(horizon).mean()
@@ -66,7 +66,7 @@ def add_features(data, horizons):
     return data, feature_data
 
 
-def save_data(data,feature_data,output_dir):
+def save_data(data, feature_data, output_dir):
     """Saves the processed data to the output directory.
 
     Args:
@@ -78,7 +78,9 @@ def save_data(data,feature_data,output_dir):
     output_feature = os.path.join(output_dir, "features.csv")
     logging.info(f"Saving processed data to {output_file}")
     data.to_csv(output_file, index=False)
-    feature_data.to_csv(output_feature, index=False) #this to be used for model monitoring
+    feature_data.to_csv(
+        output_feature, index=False
+    )  # this to be used for model monitoring
 
 
 def process_data(input_path, output_dir, horizons):

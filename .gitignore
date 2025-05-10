@@ -1,1 +1,11 @@
 .ipynb_checkpoints/
+*.pyc
+__pycache__/
+*.pkl
+*.pyd   
+.pytest_cache
+docker/config.py
+docker/.ipynb_checkpoints
+.aws-sam
+
+

@@ -15,6 +15,7 @@ def process_data(sp500):
     """
 
     # Extract features for prediction
+    sp500.set_index("Date", inplace=True)
     sp500["Tomorrow"] = sp500["Close"].shift(-1)
     sp500["Target"] = (sp500["Tomorrow"] > sp500["Close"]).astype(int)
 
@@ -35,7 +36,9 @@ def process_data(sp500):
     sp500data = sp500.dropna()  # Drop rows with NaN values
     features = sp500data.columns[-10:].to_list()
     data = sp500data[features]
-    return data
+
+    # Return only the last row
+    return data.tail(1)
 
 
 def main():
@@ -58,7 +61,7 @@ def main():
     processed_data = process_data(data)
 
     os.makedirs(args.output_dir, exist_ok=True)
-    processed_data.to_csv(output_path, index=False)
+    processed_data.to_csv(output_path, index=False, header=False)
 
 
 if __name__ == "__main__":

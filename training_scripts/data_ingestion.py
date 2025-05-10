@@ -1,21 +1,9 @@
 import os
+import sys
 import argparse
 from datetime import datetime, timedelta
-import subprocess
-import sys
-
-
-def install_dependencies():
-    """
-    Install required Python dependencies.
-    Alternatively, consider using a pre-built container with these dependencies pre-installed.
-    """
-    try:
-        print("Installing required dependencies...")
-        subprocess.check_call([sys.executable, "-m", "pip", "install", "yfinance"])
-    except subprocess.CalledProcessError as e:
-        print(f"Failed to install dependencies: {e}")
-        sys.exit(1)
+from curl_cffi import requests
+import yfinance as yf
 
 
 def fetch_data(years_to_filter: int, output_dir: str) -> None:
@@ -34,7 +22,9 @@ def fetch_data(years_to_filter: int, output_dir: str) -> None:
         raise ValueError("The value for 'years_to_filter' must be a positive integer.")
 
     try:
-        import yfinance as yf
+        # To prevent rate limit error
+        session = requests.Session(impersonate="chrome")
+        ticker = yf.Ticker("...", session=session)
 
         print("Fetching historical data for the S&P 500...")
         sp500 = yf.Ticker("^GSPC").history(period="max")
@@ -51,7 +41,7 @@ def fetch_data(years_to_filter: int, output_dir: str) -> None:
         os.makedirs(output_dir, exist_ok=True)
 
         # Save data to CSV
-        filename = "snp500.csv"
+        filename = "sp500_input.csv"
         output_path = os.path.join(output_dir, filename)
         filtered_data.to_csv(output_path, index=True)
         print(f"Data saved successfully to: {output_path}")
@@ -65,9 +55,6 @@ def main():
     """
     Main entry point for the script. Handles argument parsing and orchestrates the data fetching process.
     """
-    # Install dependencies
-    install_dependencies()
-
     # Parse command-line arguments
     parser = argparse.ArgumentParser(
         description="Fetch and save historical S&P 500 market data."
