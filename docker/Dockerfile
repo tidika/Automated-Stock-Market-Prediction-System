@@ -17,7 +17,7 @@
 
 FROM python:3.11-slim-buster
 
-RUN pip3 install pandas==2.2.2 yfinance==0.2.54 scikit-learn==1.5.1 curl_cffi==0.10.0
+RUN pip3 install pandas==2.2.2 yfinance==0.2.60 scikit-learn==1.5.1 curl_cffi==0.10.0
 ENV PYTHONUNBUFFERED=TRUE
 
 ENTRYPOINT ["python3"]
