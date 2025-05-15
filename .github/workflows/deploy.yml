@@ -13,21 +13,6 @@ jobs:
     permissions:
       id-token: write  # Required for OIDC to AWS
       contents: read
-name: Build and Deploy SageMaker Pipeline
-
-on:
-  push:
-    branches: [ main ]
-  workflow_dispatch:  # Allows manual runs
-
-jobs:
-  build-test-deploy:
-    name: Build, Test, and Deploy
-    runs-on: ubuntu-latest
-
-    permissions:
-      id-token: write  # Required for OIDC to AWS
-      contents: read
 
     steps:
       # Step 1: Check out the repo
