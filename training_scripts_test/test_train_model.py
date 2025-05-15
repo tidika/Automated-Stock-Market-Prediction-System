@@ -9,7 +9,7 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.join(current_dir, "..", "training_scripts")
 sys.path.append(parent_dir)
 
-from train import load_data, train_model
+from train_model import load_data, train_model
 
 
 @pytest.fixture
