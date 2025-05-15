@@ -242,6 +242,6 @@ pipeline = Pipeline(
 pipeline.upsert(role_arn=role)
 
 # Start pipeline execution
-execution = pipeline.start()
-print(f"Pipeline Execution ARN: {execution.arn}")
-execution.wait()
+# execution = pipeline.start()
+# print(f"Pipeline Execution ARN: {execution.arn}")
+# execution.wait()

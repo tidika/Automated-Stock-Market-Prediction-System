@@ -1,0 +1,92 @@
+name: Build and Deploy SageMaker Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:  # Allows manual runs
+
+jobs:
+  build-test-deploy:
+    name: Build, Test, and Deploy
+    runs-on: ubuntu-latest
+
+    permissions:
+      id-token: write  # Required for OIDC to AWS
+      contents: read
+name: Build and Deploy SageMaker Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:  # Allows manual runs
+
+jobs:
+  build-test-deploy:
+    name: Build, Test, and Deploy
+    runs-on: ubuntu-latest
+
+    permissions:
+      id-token: write  # Required for OIDC to AWS
+      contents: read
+
+    steps:
+      # Step 1: Check out the repo
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Step 2: Configure AWS credentials using GitHub's OIDC authentication
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::930627915954:role/github-actions-OIDC
+          aws-region: us-east-2
+
+      # Step 3: Set up Python and install dependencies
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r Automated_stock_market_prediction_system/requirements.txt
+
+      # Step 4: Run unit tests from python scripts 
+      - name: Run model training  Python script tests
+        run: |
+          if [ -d "Automated_stock_market_prediction_system/test_inference_scripts" ]; then
+            echo "Running inference script tests..."
+            pytest Automated_stock_market_prediction_system/test_inference_scripts
+          else
+            echo "No inference test directory found."
+          fi
+
+          if [ -d "Automated_stock_market_prediction_system/test_training_scripts" ]; then
+            echo "Running training script tests..."
+            pytest Automated_stock_market_prediction_system/test_training_scripts
+          else
+            echo "No training test directory found."
+          fi
+
+      # Step 5: Build Docker image using docker.py script
+      - name: Build Docker image
+        run: |
+          echo "Building Docker image via docker.py..."
+          python Automated_stock_market_prediction_system/docker/docker.py
+
+      # Step 6: Run and deploy the SageMaker training pipeline
+      - name: Deploy SageMaker Training pipeline
+        env:
+          AWS_REGION: us-east-2
+        run: |
+          echo "Running Training SageMaker pipeline..."
+          python Automated_stock_market_prediction_system/sagemaker_training_pipeline.py
+
+      # Step 7: Run and deploy the SageMaker inference pipeline
+      - name: Deploy SageMaker Inference pipeline
+        env:
+          AWS_REGION: us-east-2
+        run: |
+          echo "Running Inference SageMaker pipeline..."
+          python Automated_stock_market_prediction_system/sagemaker_inference_pipeline.py

@@ -285,5 +285,5 @@ pipeline = Pipeline(
     sagemaker_session=sagemaker_session,
 )
 pipeline.upsert(role_arn=role)
-execution = pipeline.start()
-execution.wait()
+# execution = pipeline.start()
+# execution.wait()
