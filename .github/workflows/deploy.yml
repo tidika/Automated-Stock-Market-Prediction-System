@@ -40,16 +40,17 @@ jobs:
       # Step 4: Run unit tests from python scripts 
       - name: Run model training  Python script tests
         run: |
-          if [ -d "test_inference_scripts" ]; then
+
+          if [ -d "inference_scripts_test" ]; then
             echo "Running inference script tests..."
-            pytest test_inference_scripts
+            pytest inference_scripts_test
           else
             echo "No inference test directory found."
           fi
 
-          if [ -d "test_training_scripts" ]; then
+          if [ -d "training_scripts_test" ]; then
             echo "Running training script tests..."
-            pytest test_training_scripts
+            pytest training_scripts_test
           else
             echo "No training test directory found."
           fi
@@ -57,6 +58,7 @@ jobs:
       # Step 5: Build Docker image using docker.py script
       - name: Build Docker image
         run: |
+          echo "Current working directory: $(pwd)"
           echo "Building Docker image via docker.py..."
           python docker/docker.py
 

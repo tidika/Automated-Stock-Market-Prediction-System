@@ -52,34 +52,70 @@ def login_to_ecr(region: str, registry_id: str) -> None:
         print(f"Login failed: {str(e)}")
 
 
+# def build_docker_image(repository: str, tag: str) -> None:
+#     """Builds the Docker image locally."""
+#     build_command = f"docker build -t {repository}:{tag} ."
+#     try:
+#         subprocess.run(
+#             build_command, check=True, capture_output=True, text=True, encoding="utf-8"
+#         )
+#         print("✅ Docker image built successfully.")
+#     except subprocess.CalledProcessError as e:
+#         print("Docker build failed!\n", e.stderr)
+#         exit(1)
+
 def build_docker_image(repository: str, tag: str) -> None:
-    """Builds the Docker image locally."""
-    build_command = f"docker build -t {repository}:{tag} ."
+    """Builds the Docker image locally or in GitHub Actions."""
+    build_command = ["docker", "build", "-t", f"{repository}:{tag}", "."]
+
     try:
-        subprocess.run(
-            build_command, check=True, capture_output=True, text=True, encoding="utf-8"
+        print(f"🔧 Running Docker build: {' '.join(build_command)}")
+        result = subprocess.run(
+            build_command,
+            check=True,
+            capture_output=True,
+            text=True
         )
         print("✅ Docker image built successfully.")
+        print(result.stdout)
     except subprocess.CalledProcessError as e:
-        print("Docker build failed!\n", e.stderr)
+        print("❌ Docker build failed!")
+        print(e.stderr)
         exit(1)
 
+# def tag_docker_image(local_repo: str, tag: str, full_image_name: str) -> None:
+#     """Tags the Docker image with the ECR repo URL."""
+#     tag_command = f"docker tag {local_repo}:{tag} {full_image_name}"
+#     subprocess.run(tag_command, check=True)
+#     print(f"✅ Docker image tagged as {full_image_name}")
 
 def tag_docker_image(local_repo: str, tag: str, full_image_name: str) -> None:
-    """Tags the Docker image with the ECR repo URL."""
-    tag_command = f"docker tag {local_repo}:{tag} {full_image_name}"
+    """Tags the Docker image with the ECR repo URL using a safe, structured command."""
+    tag_command = ["docker", "tag", f"{local_repo}:{tag}", full_image_name]
     subprocess.run(tag_command, check=True)
     print(f"✅ Docker image tagged as {full_image_name}")
 
 
+# def push_docker_image(full_image_name: str) -> None:
+#     """Pushes the Docker image to ECR."""
+#     push_command = f"docker push {full_image_name}"
+#     try:
+#         subprocess.run(push_command, check=True, capture_output=True, text=True)
+#         print(f"✅ Docker image pushed to {full_image_name}")
+#     except subprocess.CalledProcessError as e:
+#         print("Docker push failed!\n", e.stderr)
+#         exit(1)
+
 def push_docker_image(full_image_name: str) -> None:
-    """Pushes the Docker image to ECR."""
-    push_command = f"docker push {full_image_name}"
+    """Pushes the Docker image to ECR using a safe subprocess command."""
+    push_command = ["docker", "push", full_image_name]
     try:
-        subprocess.run(push_command, check=True, capture_output=True, text=True)
+        result = subprocess.run(push_command, check=True, capture_output=True, text=True)
         print(f"✅ Docker image pushed to {full_image_name}")
+        print(result.stdout)
     except subprocess.CalledProcessError as e:
-        print("Docker push failed!\n", e.stderr)
+        print("❌ Docker push failed!")
+        print(e.stderr)
         exit(1)
 
 
