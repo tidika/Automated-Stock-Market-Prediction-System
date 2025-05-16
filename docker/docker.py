@@ -75,8 +75,7 @@ def build_docker_image(repository: str, tag: str) -> None:
             check=True,
             capture_output=True,
             text=True,
-            encoding="utf-8",
-            cwd="Automated_stock_market_prediction_system"
+            encoding="utf-8"
 
         )
         print("✅ Docker image built successfully.")
