@@ -60,7 +60,9 @@ jobs:
         run: |
           echo "Current working directory: $(pwd)"
           echo "Building Docker image via docker.py..."
-          python docker/docker.py
+          cd docker
+          python docker.py
+          echo "Docker image built successfully."
 
       # Step 6: Run and deploy the SageMaker training pipeline
       - name: Deploy SageMaker Training pipeline
