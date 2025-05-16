@@ -35,21 +35,21 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r Automated_stock_market_prediction_system/requirements.txt
+          pip install -r requirements.txt
 
       # Step 4: Run unit tests from python scripts 
       - name: Run model training  Python script tests
         run: |
-          if [ -d "Automated_stock_market_prediction_system/test_inference_scripts" ]; then
+          if [ -d "test_inference_scripts" ]; then
             echo "Running inference script tests..."
-            pytest Automated_stock_market_prediction_system/test_inference_scripts
+            pytest test_inference_scripts
           else
             echo "No inference test directory found."
           fi
 
-          if [ -d "Automated_stock_market_prediction_system/test_training_scripts" ]; then
+          if [ -d "test_training_scripts" ]; then
             echo "Running training script tests..."
-            pytest Automated_stock_market_prediction_system/test_training_scripts
+            pytest test_training_scripts
           else
             echo "No training test directory found."
           fi
@@ -58,7 +58,7 @@ jobs:
       - name: Build Docker image
         run: |
           echo "Building Docker image via docker.py..."
-          python Automated_stock_market_prediction_system/docker/docker.py
+          python docker/docker.py
 
       # Step 6: Run and deploy the SageMaker training pipeline
       - name: Deploy SageMaker Training pipeline
@@ -66,7 +66,7 @@ jobs:
           AWS_REGION: us-east-2
         run: |
           echo "Running Training SageMaker pipeline..."
-          python Automated_stock_market_prediction_system/sagemaker_training_pipeline.py
+          python sagemaker_training_pipeline.py
 
       # Step 7: Run and deploy the SageMaker inference pipeline
       - name: Deploy SageMaker Inference pipeline
@@ -74,4 +74,4 @@ jobs:
           AWS_REGION: us-east-2
         run: |
           echo "Running Inference SageMaker pipeline..."
-          python Automated_stock_market_prediction_system/sagemaker_inference_pipeline.py
+          python sagemaker_inference_pipeline.py
