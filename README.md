@@ -59,9 +59,9 @@ This project provides a comprehensive solution for automated stock market predic
 
 The **Automated Stock Market Prediction System** is designed to predict whether the S&P 500 index will rise or fall the next day. It leverages AWS SageMaker Pipelines for:
 
-- Training a machine learning model
-- Making predictions using a deployed model endpoint
-- Monitoring the model for data drift and quality issues
+- Training a machine learning model.
+- Making predictions using batch transform.
+- Monitoring the model for data drift and quality issues.
 
 ---
 
@@ -130,16 +130,16 @@ This pipeline makes predictions and monitors incoming data. It includes:
 
 
 - [docker/](/docker)                   # Dockerfiles and containerization scripts
-- images/                    # Pipeline DAGs and visual assets
-- inference_scripts/         # Scripts for the inference process
-- inference_scripts_test/    # Test scripts for inference pipeline
-- training_scripts/          # Scripts for model training
-- training_scripts_test/     # Test scripts for training pipeline
-- sagemaker_inference_pipeline.py     # Defines inference pipeline
-- sagemaker_training_pipeline.py      # Defines training pipeline
-- requirements.txt           # Project dependencies
+- [images/](/images)                   # Pipeline DAGs and visual assets
+- [inference_scripts/](/inference_scripts)    # Scripts for the inference process
+- [inference_scripts_test/](/inference_scripts_test)   # Test scripts for inference pipeline
+- [training_scripts/](/training_scripts)          # Scripts for model training
+- [training_scripts_test/](/training_scripts_test)     # Test scripts for training pipeline
+- [sagemaker_inference_pipeline.py](/sagemaker_inference_pipeline.py)    # Defines inference pipeline
+- [sagemaker_training_pipeline.py](/sagemaker_training_pipeline.py)      # Defines training pipeline
+- [requirements.txt](/requirements.txt)           # Project dependencies
 
-## Prerequisites
+## 🧾 Prerequisites
 To use this project, you’ll need:
 
 - An AWS account with SageMaker permissions
@@ -150,7 +150,7 @@ To use this project, you’ll need:
 
 - AWS CLI configured with proper credentials
 
-## Technologies Used
+## 🧰 Technologies Used
 This project leverages the following AWS services:
 
 - Amazon SageMaker
