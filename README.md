@@ -128,15 +128,16 @@ This pipeline makes predictions and monitors incoming data. It includes:
 
 ## 📁 Repository Structure
 
-docker/                    # Dockerfiles and containerization scripts
-images/                    # Pipeline DAGs and visual assets
-inference_scripts/         # Scripts for the inference process
-inference_scripts_test/    # Test scripts for inference pipeline
-training_scripts/          # Scripts for model training
-training_scripts_test/     # Test scripts for training pipeline
-sagemaker_inference_pipeline.py     # Defines inference pipeline
-sagemaker_training_pipeline.py      # Defines training pipeline
-requirements.txt           # Project dependencies
+
+- [docker/](/docker)                   # Dockerfiles and containerization scripts
+- images/                    # Pipeline DAGs and visual assets
+- inference_scripts/         # Scripts for the inference process
+- inference_scripts_test/    # Test scripts for inference pipeline
+- training_scripts/          # Scripts for model training
+- training_scripts_test/     # Test scripts for training pipeline
+- sagemaker_inference_pipeline.py     # Defines inference pipeline
+- sagemaker_training_pipeline.py      # Defines training pipeline
+- requirements.txt           # Project dependencies
 
 ## Prerequisites
 To use this project, you’ll need:
