@@ -119,9 +119,11 @@ This pipeline makes predictions and monitors incoming data. It includes:
 
 ---
 
-## ⏰ Pipeline Scheduling
+## ⏰ Pipeline Triggering
 
-- **Training Pipeline**: Runs weekly using **AWS EventBridge** to retrain the model with the latest data.
+ The  training and inference pipeline is triggered using **AWS EventBridge**. 
+
+- **Training Pipeline**: Runs weekly using to retrain the model with the latest data.
 - **Inference Pipeline**: Runs every weekday (Monday–Friday) to predict the next day's S&P 500 movement.
 
 ---
@@ -139,6 +141,8 @@ This pipeline makes predictions and monitors incoming data. It includes:
 - [sagemaker_training_pipeline.py](/sagemaker_training_pipeline.py)      # Defines training pipeline
 - [requirements.txt](/requirements.txt)           # Project dependencies
 
+---
+
 ## 🧾 Prerequisites
 To use this project, you’ll need:
 
@@ -149,6 +153,8 @@ To use this project, you’ll need:
 - Docker installed
 
 - AWS CLI configured with proper credentials
+
+---
 
 ## 🧰 Technologies Used
 This project leverages the following AWS services:
