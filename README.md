@@ -69,12 +69,13 @@ The **Automated Stock Market Prediction System** is designed to predict whether 
 
 The system is composed of two main components:
 
-1. **SageMaker Training Pipeline**
-2. **SageMaker Inference Pipeline**
+1. [**SageMaker Training Pipeline**](sagemaker_training_pipeline.ipynb)
+2. [**SageMaker Inference Pipeline**](sagemaker_inference_pipeline.ipynb)
 
----
 
 ## 🛠️ SageMaker Training Pipeline
+
+![Sagemaker training pipeline](/images/training_pipeline_img.jpeg)
 
 This pipeline builds and registers a machine learning model. It includes:
 
@@ -98,6 +99,8 @@ This pipeline builds and registers a machine learning model. It includes:
 ---
 
 ## 🔍 SageMaker Inference Pipeline
+
+![Sagemaker inference pipeline](/images/inference_pipeline_img.jpeg)
 
 This pipeline makes predictions and monitors incoming data. It includes:
 
