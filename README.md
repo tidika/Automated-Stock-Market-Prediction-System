@@ -69,8 +69,8 @@ The **Automated Stock Market Prediction System** is designed to predict whether 
 
 The system is composed of two main components:
 
-1. [**SageMaker Training Pipeline**](sagemaker_training_pipeline.ipynb)
-2. [**SageMaker Inference Pipeline**](sagemaker_inference_pipeline.ipynb)
+1. [**SageMaker Training Pipeline**](sagemaker_training_pipeline.py)
+2. [**SageMaker Inference Pipeline**](sagemaker_inference_pipeline.py)
 
 
 ## 🛠️ SageMaker Training Pipeline
@@ -80,10 +80,10 @@ The system is composed of two main components:
 This pipeline builds and registers a machine learning model. It includes:
 
 - **Data Ingestion**: Fetches historical S&P 500 data.  
-  *Example dataset*: [Insert link here]
+  *Example dataset*: [training data](/sample_dataset/input_data.csv)
 
 - **Data Preprocessing**: Cleans and transforms the data.  
-  *Sample features generated*: [Insert link or example here]
+  *Sample features generated*: [feature data](/sample_dataset/feature_data.csv)
 
 - **Model Training**: Trains the model on the preprocessed dataset.
 
@@ -128,7 +128,6 @@ This pipeline makes predictions and monitors incoming data. It includes:
 
 ## 📁 Repository Structure
 
-```text
 docker/                    # Dockerfiles and containerization scripts
 images/                    # Pipeline DAGs and visual assets
 inference_scripts/         # Scripts for the inference process
@@ -138,3 +137,27 @@ training_scripts_test/     # Test scripts for training pipeline
 sagemaker_inference_pipeline.py     # Defines inference pipeline
 sagemaker_training_pipeline.py      # Defines training pipeline
 requirements.txt           # Project dependencies
+
+## Prerequisites
+To use this project, you’ll need:
+
+- An AWS account with SageMaker permissions
+
+- Python 3.6 or higher
+
+- Docker installed
+
+- AWS CLI configured with proper credentials
+
+## Technologies Used
+This project leverages the following AWS services:
+
+- Amazon SageMaker
+
+- Amazon S3
+
+- AWS Lambda
+
+- Amazon EventBridge
+
+- Amazon CloudWatch
