@@ -1,4 +1,4 @@
-# Automated-Stock-Market-Prediction-System
+<!-- # Automated-Stock-Market-Prediction-System
 
 This project demonstrates how to build an automated stock market (SP 500) prediction system using AWS SageMaker. The components of this system are:
 
@@ -52,4 +52,86 @@ The model monitoring includes:
 
 ## Conclusion
 
-This project provides a comprehensive solution for automated stock market prediction using AWS SageMaker. It includes training, inference, and monitoring pipelines to ensure the model remains accurate and reliable over time.
+This project provides a comprehensive solution for automated stock market prediction using AWS SageMaker. It includes training, inference, and monitoring pipelines to ensure the model remains accurate and reliable over time. -->
+
+
+# Automated Stock Market Prediction System
+
+The **Automated Stock Market Prediction System** is designed to predict whether the S&P 500 index will rise or fall the next day. It leverages AWS SageMaker Pipelines for:
+
+- Training a machine learning model
+- Making predictions using a deployed model endpoint
+- Monitoring the model for data drift and quality issues
+
+---
+
+## 🧱 Architecture
+
+The system is composed of two main components:
+
+1. **SageMaker Training Pipeline**
+2. **SageMaker Inference Pipeline**
+
+---
+
+## 🛠️ SageMaker Training Pipeline
+
+This pipeline builds and registers a machine learning model. It includes:
+
+- **Data Ingestion**: Fetches historical S&P 500 data.  
+  *Example dataset*: [Insert link here]
+
+- **Data Preprocessing**: Cleans and transforms the data.  
+  *Sample features generated*: [Insert link or example here]
+
+- **Model Training**: Trains the model on the preprocessed dataset.
+
+- **Model Evaluation**: Validates model performance metrics.
+
+- **Data Capture**: Captures baseline statistics of the training dataset for monitoring purposes.
+
+- **Model Registration**: Registers models that meet performance thresholds for deployment.
+
+**Training Pipeline DAG**:  
+![Training Pipeline DAG](images/training_pipeline_dag.png) <!-- Replace with the actual image path -->
+
+---
+
+## 🔍 SageMaker Inference Pipeline
+
+This pipeline makes predictions and monitors incoming data. It includes:
+
+- **Data Input**: Receives new stock market data.
+
+- **Data Preprocessing**: Aligns data format with the training schema.
+
+- **Monitoring**: Detects any data drift or schema violations.
+
+- **Batch Transform**: Uses the currently registered model to make predictions.
+
+- **Retraining Trigger**: If data violations are detected, the training pipeline is automatically triggered for model retraining.
+
+**Inference Pipeline DAG**:  
+![Inference Pipeline DAG](images/inference_pipeline_dag.png) <!-- Replace with the actual image path -->
+
+---
+
+## ⏰ Pipeline Scheduling
+
+- **Training Pipeline**: Runs weekly using **AWS EventBridge** to retrain the model with the latest data.
+- **Inference Pipeline**: Runs every weekday (Monday–Friday) to predict the next day's S&P 500 movement.
+
+---
+
+## 📁 Repository Structure
+
+```text
+docker/                    # Dockerfiles and containerization scripts
+images/                    # Pipeline DAGs and visual assets
+inference_scripts/         # Scripts for the inference process
+inference_scripts_test/    # Test scripts for inference pipeline
+training_scripts/          # Scripts for model training
+training_scripts_test/     # Test scripts for training pipeline
+sagemaker_inference_pipeline.py     # Defines inference pipeline
+sagemaker_training_pipeline.py      # Defines training pipeline
+requirements.txt           # Project dependencies
